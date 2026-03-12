@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidade — Minha Mão de Obra</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --amber: #E07B2F; --amber-light: #F5A25A;
+  --dark: #1A1208; --cream: #FAF5EC; --cream-mid: #F0E6D0;
+  --text: #3D2B10; --muted: #8A6E4A; --green: #4A7C59;
+  --border: #E8DDD0; --red: #C0392B;
+}
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  background: rgba(26,18,8,0.96); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; height: 64px;
+  border-bottom: 1px solid rgba(224,123,47,0.2);
+}
+.nav-logo { font-family: 'Fraunces', serif; font-size: 1.4rem; color: var(--amber-light); text-decoration: none; }
+.nav-logo span { color: #fff; }
+.nav-back { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+.nav-back:hover { color: var(--amber-light); }
+
+.page-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 0; min-height: 100vh; padding-top: 64px; }
+
+/* SIDEBAR TOC */
+.toc {
+  position: sticky; top: 64px; height: calc(100vh - 64px); overflow-y: auto;
+  background: #fff; border-right: 1px solid var(--border);
+  padding: 32px 20px;
+}
+.toc-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 16px; }
+.toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.toc-list a {
+  display: block; padding: 8px 12px; border-radius: 8px;
+  font-size: 0.82rem; color: var(--muted); text-decoration: none;
+  transition: all 0.2s; font-weight: 500;
+}
+.toc-list a:hover { background: var(--cream); color: var(--text); }
+.toc-list a.active { background: rgba(224,123,47,0.1); color: var(--amber); font-weight: 700; }
+.toc-divider { height: 1px; background: var(--border); margin: 12px 0; }
+.toc-lgpd-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(74,124,89,0.1); border: 1px solid rgba(74,124,89,0.25);
+  border-radius: 10px; padding: 12px; margin-top: 20px;
+  font-size: 0.75rem; color: var(--green); font-weight: 600;
+}
+
+/* CONTENT */
+.content { padding: 48px 60px; max-width: 860px; }
+.page-header { margin-bottom: 48px; }
+.page-header .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--amber); margin-bottom: 12px; }
+.page-header h1 { font-family: 'Fraunces', serif; font-size: clamp(2rem, 3vw, 2.8rem); color: var(--dark); line-height: 1.2; margin-bottom: 16px; }
+.page-header .meta { display: flex; gap: 20px; flex-wrap: wrap; }
+.meta-item { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--muted); }
+.meta-item strong { color: var(--text); }
+
+/* HIGHLIGHT BOX */
+.highlight {
+  background: rgba(224,123,47,0.08); border-left: 3px solid var(--amber);
+  border-radius: 0 14px 14px 0; padding: 18px 22px;
+  margin: 24px 0; font-size: 0.88rem; line-height: 1.8; color: var(--text);
+}
+.highlight strong { color: var(--amber); }
+
+.info-box {
+  background: rgba(74,124,89,0.07); border: 1px solid rgba(74,124,89,0.2);
+  border-radius: 14px; padding: 18px 22px;
+  margin: 20px 0; font-size: 0.85rem; line-height: 1.7; color: var(--text);
+}
+.info-box strong { color: var(--green); display: block; margin-bottom: 6px; }
+
+.warn-box {
+  background: rgba(192,57,43,0.06); border: 1px solid rgba(192,57,43,0.2);
+  border-radius: 14px; padding: 18px 22px;
+  margin: 20px 0; font-size: 0.85rem; line-height: 1.7; color: var(--text);
+}
+.warn-box strong { color: var(--red); display: block; margin-bottom: 6px; }
+
+/* SECTIONS */
+.policy-section { margin-bottom: 52px; scroll-margin-top: 80px; }
+.policy-section h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem; color: var(--dark);
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 2px solid var(--cream-mid);
+  display: flex; align-items: center; gap: 10px;
+}
+.policy-section h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin: 20px 0 10px; }
+.policy-section p { font-size: 0.9rem; line-height: 1.85; color: #5A3E1B; margin-bottom: 12px; }
+.policy-section ul, .policy-section ol { padding-left: 22px; margin-bottom: 14px; }
+.policy-section li { font-size: 0.88rem; line-height: 1.8; color: #5A3E1B; margin-bottom: 6px; }
+.policy-section a { color: var(--amber); text-decoration: none; }
+.policy-section a:hover { text-decoration: underline; }
+
+/* DATA TABLE */
+.data-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.82rem; }
+.data-table th { background: var(--dark); color: #fff; padding: 12px 14px; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.data-table th:first-child { border-radius: 10px 0 0 0; }
+.data-table th:last-child { border-radius: 0 10px 0 0; }
+.data-table td { padding: 11px 14px; border-bottom: 1px solid var(--cream-mid); vertical-align: top; line-height: 1.5; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:nth-child(even) td { background: #fff; }
+.data-table tr:nth-child(odd) td { background: var(--cream); }
+.badge-risk { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; }
+.risk-high { background: rgba(192,57,43,0.1); color: var(--red); }
+.risk-med  { background: rgba(224,123,47,0.1); color: var(--amber); }
+.risk-low  { background: rgba(74,124,89,0.1);  color: var(--green); }
+
+/* RIGHTS GRID */
+.rights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.right-card { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 18px; }
+.right-card .rc-icon { font-size: 1.5rem; margin-bottom: 8px; }
+.right-card h4 { font-size: 0.88rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
+.right-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+
+/* DPO CARD */
+.dpo-card {
+  background: var(--dark); color: #fff; border-radius: 20px; padding: 28px;
+  display: flex; align-items: flex-start; gap: 20px; margin-top: 20px;
+}
+.dpo-icon { font-size: 2.5rem; flex-shrink: 0; }
+.dpo-info h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--amber-light); margin-bottom: 8px; }
+.dpo-info p { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 12px; }
+.dpo-contact { display: flex; gap: 12px; flex-wrap: wrap; }
+.dpo-btn { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 8px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+.dpo-btn:hover { background: rgba(224,123,47,0.3); }
+
+/* ACCEPT BANNER */
+.accept-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--dark); border-top: 1px solid rgba(224,123,47,0.3);
+  padding: 18px 5%; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  z-index: 99; transform: translateY(0); transition: transform 0.4s;
+}
+.accept-banner.hidden { transform: translateY(110%); }
+.accept-banner p { flex: 1; font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; min-width: 200px; }
+.accept-banner p a { color: var(--amber-light); text-decoration: none; }
+.btn-accept { background: var(--green); color: #fff; border: none; padding: 11px 26px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+.btn-accept:hover { background: #5a9e6e; }
+.btn-decline { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.45); padding: 11px 20px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.btn-decline:hover { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.7); }
+
+@media (max-width: 860px) { .page-wrap { grid-template-columns: 1fr; } .toc { display: none; } .content { padding: 32px 24px; } .rights-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="maoDeObra.html">Minha <span>Mão de Obra</span></a>
+  <a class="nav-back" href="maoDeObra.html">← Voltar ao site</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- TOC SIDEBAR -->
+  <aside class="toc">
+    <div class="toc-title">Nesta página</div>
+    <ul class="toc-list" id="toc-list">
+      <li><a href="#intro" class="active">1. Introdução</a></li>
+      <li><a href="#coleta">2. Dados que coletamos</a></li>
+      <li><a href="#finalidade">3. Finalidade do uso</a></li>
+      <li><a href="#compartilhamento">4. Compartilhamento</a></li>
+      <li><a href="#armazenamento">5. Armazenamento</a></li>
+      <li><a href="#seguranca">6. Segurança</a></li>
+      <li><a href="#direitos">7. Seus direitos (LGPD)</a></li>
+      <li><a href="#cookies">8. Cookies</a></li>
+      <li><a href="#menores">9. Menores de idade</a></li>
+      <li><a href="#alteracoes">10. Alterações</a></li>
+      <li><a href="#contato">11. Contato & DPO</a></li>
+    </ul>
+    <div class="toc-divider"></div>
+    <div class="toc-lgpd-badge">
+      ✅ Em conformidade com a<br>Lei 13.709/2018 — LGPD
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="page-header">
+      <div class="label">Transparência & Privacidade</div>
+      <h1>Política de Privacidade</h1>
+      <div class="meta">
+        <div class="meta-item">📅 <strong>Versão:</strong> 1.0 — Março de 2025</div>
+        <div class="meta-item">⚖️ <strong>Lei aplicável:</strong> LGPD (Lei 13.709/2018)</div>
+        <div class="meta-item">🌐 <strong>Aplica-se a:</strong> minhamaodeobra.com.br</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>Resumo simples:</strong> Coletamos seus dados apenas para fazer a plataforma funcionar — conectar clientes a profissionais. Não vendemos, não compartilhamos sem sua autorização e você pode pedir a exclusão a qualquer momento. Leia abaixo para entender tudo em detalhes.
+    </div>
+
+    <!-- 1. INTRO -->
+    <section class="policy-section" id="intro">
+      <h2>1. Introdução</h2>
+      <p>A <strong>Minha Mão de Obra</strong> ("Plataforma", "nós", "nosso") é uma plataforma digital de conexão entre clientes e profissionais autônomos, operada em conformidade com a <strong>Lei Geral de Proteção de Dados Pessoais (LGPD — Lei nº 13.709/2018)</strong>.</p>
+      <p>Esta Política de Privacidade descreve como coletamos, usamos, armazenamos, protegemos e compartilhamos os dados pessoais de nossos usuários — sejam eles clientes buscando serviços ou profissionais cadastrados na plataforma.</p>
+      <p>Ao criar uma conta, publicar uma demanda, se cadastrar como profissional ou simplesmente navegar em nosso site, você concorda com os termos desta política. Caso não concorde, por favor não utilize a plataforma.</p>
+      <div class="info-box">
+        <strong>👤 Quem é o Controlador dos seus dados?</strong>
+        Minha Mão de Obra — CNPJ em processo de regularização. Responsável pelas decisões sobre o tratamento de dados pessoais na plataforma. Contato: privacidade@minhamaodeobra.com.br
+      </div>
+    </section>
+
+    <!-- 2. DADOS COLETADOS -->
+    <section class="policy-section" id="coleta">
+      <h2>2. Dados que coletamos</h2>
+      <p>Coletamos diferentes tipos de dados dependendo de como você usa a plataforma:</p>
+
+      <h3>2.1 Dados fornecidos diretamente por você</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Dado</th><th>Quem fornece</th><th>Obrigatoriedade</th><th>Risco</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nome completo</td><td>Clientes e Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-low">Baixo</span></td></tr>
+          <tr><td>CPF</td><td>Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-high">Alto</span></td></tr>
+          <tr><td>Data de nascimento</td><td>Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-med">Médio</span></td></tr>
+          <tr><td>Número de WhatsApp</td><td>Clientes e Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-med">Médio</span></td></tr>
+          <tr><td>Endereço de e-mail</td><td>Clientes e Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-med">Médio</span></td></tr>
+          <tr><td>Endereço residencial</td><td>Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-high">Alto</span></td></tr>
+          <tr><td>Cidade e Estado</td><td>Clientes e Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-low">Baixo</span></td></tr>
+          <tr><td>Foto de perfil</td><td>Profissionais</td><td>Opcional</td><td><span class="badge-risk risk-low">Baixo</span></td></tr>
+          <tr><td>Fotos de portfólio</td><td>Profissionais</td><td>Opcional</td><td><span class="badge-risk risk-low">Baixo</span></td></tr>
+          <tr><td>Senha de acesso</td><td>Profissionais</td><td>Obrigatório</td><td><span class="badge-risk risk-high">Alto</span></td></tr>
+          <tr><td>Dados de pagamento (planos)</td><td>Profissionais</td><td>Opcional</td><td><span class="badge-risk risk-high">Alto</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.2 Dados coletados automaticamente</h3>
+      <ul>
+        <li>Endereço IP e localização aproximada</li>
+        <li>Tipo de dispositivo, navegador e sistema operacional</li>
+        <li>Páginas visitadas e tempo de navegação</li>
+        <li>Termos buscados na plataforma</li>
+        <li>Cookies e dados de sessão (veja seção 8)</li>
+      </ul>
+
+      <div class="warn-box">
+        <strong>⚠️ Dados que NUNCA coletamos:</strong>
+        Não coletamos informações sobre origem racial ou étnica, convicções religiosas, opiniões políticas, dados genéticos, dados biométricos, dados sobre saúde ou vida sexual, salvo expressa autorização legal.
+      </div>
+    </section>
+
+    <!-- 3. FINALIDADE -->
+    <section class="policy-section" id="finalidade">
+      <h2>3. Finalidade do uso dos dados</h2>
+      <p>Usamos seus dados exclusivamente para as seguintes finalidades, conforme previsto no Art. 7º da LGPD:</p>
+      <ul>
+        <li><strong>Criação e gerenciamento de conta</strong> — identificação e autenticação do usuário</li>
+        <li><strong>Exibição de perfil público</strong> — nome, foto, cidade, categoria e serviços são exibidos para clientes (endereço e CPF nunca são exibidos publicamente)</li>
+        <li><strong>Conexão entre clientes e profissionais</strong> — facilitar o contato via WhatsApp</li>
+        <li><strong>Cobrança de planos</strong> — processar pagamentos de assinaturas Pro e Premium</li>
+        <li><strong>Comunicações da plataforma</strong> — notificações sobre novos contatos, atualizações e dicas (somente se você autorizou)</li>
+        <li><strong>Melhoria da plataforma</strong> — análise de uso para aprimorar funcionalidades</li>
+        <li><strong>Segurança e prevenção de fraudes</strong> — detectar e bloquear acessos não autorizados</li>
+        <li><strong>Cumprimento de obrigações legais</strong> — quando exigido por autoridade competente</li>
+      </ul>
+      <div class="info-box">
+        <strong>✅ Base legal (LGPD Art. 7º):</strong>
+        O tratamento dos seus dados está fundamentado em: consentimento expresso (Art. 7º, I), execução de contrato (Art. 7º, V), legítimo interesse (Art. 7º, IX) e cumprimento de obrigação legal (Art. 7º, II).
+      </div>
+    </section>
+
+    <!-- 4. COMPARTILHAMENTO -->
+    <section class="policy-section" id="compartilhamento">
+      <h2>4. Compartilhamento de dados</h2>
+      <p><strong>Não vendemos seus dados pessoais.</strong> O compartilhamento ocorre apenas nas seguintes situações:</p>
+
+      <h3>4.1 Entre usuários da plataforma</h3>
+      <p>Quando um cliente entra em contato com um profissional, seu WhatsApp é compartilhado com ele. O profissional consente com isso ao se cadastrar. O endereço completo e CPF nunca são compartilhados.</p>
+
+      <h3>4.2 Fornecedores e parceiros técnicos</h3>
+      <ul>
+        <li><strong>Google Firebase</strong> — armazenamento de dados e autenticação (servidores nos EUA com cláusulas contratuais padrão da UE)</li>
+        <li><strong>Google Analytics</strong> — análise de navegação (dados anonimizados)</li>
+        <li><strong>Processador de pagamentos</strong> — dados de cobrança para assinaturas (nunca armazenamos dados de cartão)</li>
+        <li><strong>Google reCAPTCHA</strong> — prevenção de spam nos formulários</li>
+      </ul>
+      <p>Todos os fornecedores estão sujeitos a acordos de confidencialidade e tratam dados apenas conforme nossas instruções.</p>
+
+      <h3>4.3 Obrigação legal</h3>
+      <p>Podemos compartilhar dados com autoridades governamentais quando exigido por lei, ordem judicial ou para proteção de direitos legais.</p>
+
+      <div class="warn-box">
+        <strong>🚫 Nunca compartilhamos seus dados para:</strong>
+        Fins publicitários de terceiros, venda a data brokers, listas de marketing de outras empresas, ou qualquer finalidade não descrita nesta política.
+      </div>
+    </section>
+
+    <!-- 5. ARMAZENAMENTO -->
+    <section class="policy-section" id="armazenamento">
+      <h2>5. Armazenamento e retenção de dados</h2>
+      <p>Seus dados são armazenados em servidores seguros do <strong>Google Firebase</strong>, com infraestrutura localizada nos Estados Unidos, coberta por <strong>cláusulas contratuais padrão (SCCs)</strong> aprovadas pela ANPD.</p>
+
+      <h3>Prazo de retenção</h3>
+      <ul>
+        <li><strong>Conta ativa:</strong> dados mantidos enquanto a conta existir</li>
+        <li><strong>Após exclusão da conta:</strong> dados removidos em até 30 dias</li>
+        <li><strong>Logs de segurança:</strong> mantidos por 6 meses após exclusão</li>
+        <li><strong>Dados de pagamento:</strong> mantidos por 5 anos por obrigação fiscal</li>
+        <li><strong>Dados anonimizados:</strong> podem ser mantidos por prazo indeterminado para análise estatística</li>
+      </ul>
+    </section>
+
+    <!-- 6. SEGURANÇA -->
+    <section class="policy-section" id="seguranca">
+      <h2>6. Segurança dos dados</h2>
+      <p>Adotamos medidas técnicas e organizacionais para proteger seus dados contra acesso não autorizado, alteração, divulgação ou destruição:</p>
+      <ul>
+        <li>🔒 <strong>HTTPS/TLS</strong> em todas as comunicações com o site</li>
+        <li>🔐 <strong>Senhas com hash bcrypt</strong> — nunca armazenadas em texto puro</li>
+        <li>🛡️ <strong>Criptografia em repouso</strong> para dados sensíveis como CPF</li>
+        <li>🔑 <strong>Autenticação segura</strong> via Firebase Authentication</li>
+        <li>📋 <strong>Regras de acesso granulares</strong> no banco de dados</li>
+        <li>🤖 <strong>reCAPTCHA</strong> nos formulários para prevenção de bots</li>
+        <li>📊 <strong>Logs de acesso</strong> ao painel administrativo</li>
+        <li>💾 <strong>Backups automáticos</strong> diários</li>
+      </ul>
+      <div class="warn-box">
+        <strong>⚠️ Em caso de incidente de segurança:</strong>
+        Em caso de vazamento de dados que possa acarretar risco ou dano relevante aos titulares, notificaremos a ANPD e os usuários afetados em até 72 horas, conforme Art. 48 da LGPD.
+      </div>
+    </section>
+
+    <!-- 7. DIREITOS -->
+    <section class="policy-section" id="direitos">
+      <h2>7. Seus direitos — LGPD (Art. 18)</h2>
+      <p>Como titular dos seus dados, você possui os seguintes direitos garantidos pela LGPD. Para exercê-los, entre em contato pelo e-mail <a href="mailto:privacidade@minhamaodeobra.com.br">privacidade@minhamaodeobra.com.br</a>. Responderemos em até <strong>15 dias úteis</strong>.</p>
+
+      <div class="rights-grid">
+        <div class="right-card">
+          <div class="rc-icon">👁️</div>
+          <h4>Acesso</h4>
+          <p>Solicitar a confirmação e o acesso aos seus dados pessoais que tratamos</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">✏️</div>
+          <h4>Correção</h4>
+          <p>Corrigir dados incompletos, inexatos ou desatualizados</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">🗑️</div>
+          <h4>Exclusão</h4>
+          <p>Solicitar a eliminação dos dados tratados com base no seu consentimento</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">📦</div>
+          <h4>Portabilidade</h4>
+          <p>Receber seus dados em formato estruturado para transferir a outro serviço</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">🚫</div>
+          <h4>Oposição</h4>
+          <p>Opor-se ao tratamento realizado com base em legítimo interesse</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">↩️</div>
+          <h4>Revogação do consentimento</h4>
+          <p>Revogar o consentimento dado a qualquer momento, sem custo</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">ℹ️</div>
+          <h4>Informação</h4>
+          <p>Ser informado sobre com quem seus dados foram compartilhados</p>
+        </div>
+        <div class="right-card">
+          <div class="rc-icon">⚖️</div>
+          <h4>Reclamação à ANPD</h4>
+          <p>Peticionar contra nós perante a Autoridade Nacional de Proteção de Dados</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. COOKIES -->
+    <section class="policy-section" id="cookies">
+      <h2>8. Cookies e tecnologias similares</h2>
+      <p>Utilizamos cookies para melhorar sua experiência. Você pode gerenciá-los nas configurações do seu navegador.</p>
+      <ul>
+        <li><strong>Cookies essenciais</strong> — necessários para o funcionamento do site (sessão de login, preferências). Não podem ser desativados.</li>
+        <li><strong>Cookies analíticos</strong> — Google Analytics para entender como o site é usado (anonimizados). Você pode recusar.</li>
+        <li><strong>Cookies de segurança</strong> — reCAPTCHA para prevenção de fraudes. Necessários.</li>
+      </ul>
+      <p>Ao clicar em "Aceitar" no aviso de cookies, você consente com os cookies analíticos. Cookies essenciais e de segurança sempre estarão ativos.</p>
+    </section>
+
+    <!-- 9. MENORES -->
+    <section class="policy-section" id="menores">
+      <h2>9. Menores de idade</h2>
+      <p>Nossa plataforma é destinada exclusivamente a <strong>maiores de 18 anos</strong>. Não coletamos intencionalmente dados de menores. Se identificarmos que dados de menores foram coletados sem consentimento parental, os eliminaremos imediatamente.</p>
+      <p>Se você é responsável por um menor e acredita que ele forneceu dados à plataforma, entre em contato: <a href="mailto:privacidade@minhamaodeobra.com.br">privacidade@minhamaodeobra.com.br</a></p>
+    </section>
+
+    <!-- 10. ALTERAÇÕES -->
+    <section class="policy-section" id="alteracoes">
+      <h2>10. Alterações nesta política</h2>
+      <p>Podemos atualizar esta Política de Privacidade periodicamente. Quando houver alterações relevantes, notificaremos você por e-mail e/ou por aviso em destaque na plataforma com <strong>15 dias de antecedência</strong>.</p>
+      <p>O uso continuado da plataforma após as alterações constituirá aceitação da nova política. Recomendamos revisar esta página periodicamente.</p>
+      <div class="info-box">
+        <strong>📋 Histórico de versões</strong>
+        Versão 1.0 — Março/2025 — Versão inicial, conformidade com LGPD
+      </div>
+    </section>
+
+    <!-- 11. CONTATO -->
+    <section class="policy-section" id="contato">
+      <h2>11. Contato e Encarregado (DPO)</h2>
+      <p>Para exercer seus direitos, tirar dúvidas ou registrar reclamações sobre o tratamento dos seus dados pessoais, entre em contato com nosso Encarregado de Dados (DPO):</p>
+
+      <div class="dpo-card">
+        <div class="dpo-icon">🛡️</div>
+        <div class="dpo-info">
+          <h3>Encarregado de Proteção de Dados (DPO)</h3>
+          <p>Responsável por garantir que a plataforma trate seus dados em conformidade com a LGPD. Atendemos solicitações em até <strong style="color:var(--amber-light)">15 dias úteis</strong>.</p>
+          <div class="dpo-contact">
+            <a href="mailto:privacidade@minhamaodeobra.com.br" class="dpo-btn">📧 privacidade@minhamaodeobra.com.br</a>
+            <a href="https://www.gov.br/anpd" target="_blank" class="dpo-btn">⚖️ Portal da ANPD</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ACCEPT BANNER -->
+<div class="accept-banner" id="privacy-banner">
+  <p>Usamos cookies essenciais para o funcionamento da plataforma e, com seu consentimento, cookies analíticos para melhorar a experiência. Leia nossa <a href="privacidade.html">Política de Privacidade</a> completa.</p>
+  <button class="btn-decline" onclick="declineCookies()">Só essenciais</button>
+  <button class="btn-accept" onclick="acceptCookies()">✓ Aceitar todos</button>
+</div>
+
+<script>
+// TOC highlight on scroll
+const sections = document.querySelectorAll('.policy-section');
+const tocLinks = document.querySelectorAll('.toc-list a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Cookies banner
+function acceptCookies() { localStorage.setItem('cookies','accepted'); document.getElementById('privacy-banner').classList.add('hidden'); }
+function declineCookies() { localStorage.setItem('cookies','declined'); document.getElementById('privacy-banner').classList.add('hidden'); }
+if (localStorage.getItem('cookies')) document.getElementById('privacy-banner').classList.add('hidden');
+</script>
+</body>
+</html>
