@@ -1824,14 +1824,7 @@
     );
   }
 
-  // Scroll reveal for plan cards
-  document.querySelectorAll('.plan-card, .guarantee-bar, .roi-box').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
-  });
-
+  // Scroll reveal
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1840,6 +1833,13 @@
       }
     });
   }, { threshold: 0.1 });
+
+  document.querySelectorAll('.plan-card, .guarantee-bar, .roi-box').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
 
   document.querySelectorAll('.pro-card, .step, .review-card, .cat-card').forEach(el => {
     el.style.opacity = '0';
@@ -2147,7 +2147,7 @@ const profissionais = [
     jobs: '500+', exp: '12 anos', resp: '~30min', rate: '99%',
     raio: 'Grande São Paulo', since: 'Janeiro 2023',
     portfolio: ['⚡','🔌','💡'],
-    whats: '5511999990001'
+    whats: '5511999990001' // ← substitua pelo número real do profissional
   },
   {
     id: 2, emoji: '🔨', nome: 'Ana Souza', role: 'Pedreiro & Reformas Completas',
@@ -2276,19 +2276,88 @@ function closeProfModal() {
 function openWhatsApp() {
   const p = profissionais.find(x => x.id === currentProfId);
   if (!p) return;
-  const msg = encodeURIComponent(`Olá ${p.nome.split(' ')[0]}! Vi seu perfil no Minha Mão de Obra e gostaria de um orçamento para ${p.cat.toLowerCase()}. Pode me atender?`);
-  window.open(`https://wa.me/${p.whats}?text=${msg}`, '_blank');
+
+  // Limpa o número — remove tudo que não é dígito
+  const numero = p.whats.replace(/\D/g, '');
+
+  // Valida: número brasileiro deve ter 12 ou 13 dígitos (55 + DDD + número)
+  if (!numero || numero.length < 12) {
+    showToastModal('⚠️ Número de WhatsApp não disponível para este profissional.');
+    return;
+  }
+
+  const nome = p.nome.split(' ')[0];
+  const msg = encodeURIComponent(
+    `Olá ${nome}! Vi seu perfil no *Minha Mão de Obra* e gostaria de um orçamento para *${p.cat}*.\n\nPode me atender?`
+  );
+
+  const url = `https://wa.me/${numero}?text=${msg}`;
+  window.open(url, '_blank');
+  showToastModal(`📲 Abrindo WhatsApp de ${nome}...`);
 }
 
 function shareProfile() {
   const p = profissionais.find(x => x.id === currentProfId);
   if (!p) return;
-  if (navigator.share) {
-    navigator.share({ title: p.nome, text: `Confira o perfil de ${p.nome} no Minha Mão de Obra!`, url: window.location.href });
+
+  const shareData = {
+    title: `${p.nome} — ${p.role}`,
+    text: `Encontrei ${p.nome.split(' ')[0]} no Minha Mão de Obra! ${p.cat} em ${p.cidade}. Nota ${p.rating} ⭐`,
+    url: window.location.href
+  };
+
+  if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+    // API nativa (mobile)
+    navigator.share(shareData).catch(() => fallbackCopy(p));
   } else {
-    navigator.clipboard?.writeText(window.location.href);
-    alert('Link copiado!');
+    // Fallback — copia o link
+    fallbackCopy(p);
   }
+}
+
+function fallbackCopy(p) {
+  const texto = `${p.nome} — ${p.role} | Minha Mão de Obra\n${window.location.href}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      showToastModal('🔗 Link copiado para a área de transferência!');
+    }).catch(() => {
+      // Fallback para dispositivos sem clipboard API
+      const el = document.createElement('textarea');
+      el.value = window.location.href;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToastModal('🔗 Link copiado!');
+    });
+  } else {
+    showToastModal('🔗 Copie o link da barra de endereços para compartilhar.');
+  }
+}
+
+// Toast dentro do modal (não conflita com o toast global da página)
+function showToastModal(msg) {
+  let t = document.getElementById('toast-modal');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-modal';
+    t.style.cssText = `
+      position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px);
+      background:var(--dark); color:#fff; padding:12px 22px; border-radius:100px;
+      font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:600;
+      z-index:999; opacity:0; transition:all 0.3s ease; pointer-events:none;
+      white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,0.3);
+    `;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(20px)';
+  }, 3000);
 }
 
 // Fechar com ESC
