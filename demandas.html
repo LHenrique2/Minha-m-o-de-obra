@@ -373,17 +373,21 @@ nav {
         </div>
       </div>
       <div class="mfield">
-        <label>Seu nome <span>*</span></label>
-        <input type="text" id="nd-nome" placeholder="Como devemos te chamar">
+        <label>Seu WhatsApp <span>*</span></label>
+        <input type="text" id="nd-whats" placeholder="(11) 99999-9999" maxlength="15" oninput="maskPhoneDemand(this)">
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px">🔒 Seu número só será compartilhado com o profissional <strong>após você aceitar a proposta dele</strong></div>
       </div>
       <div class="mfield">
-        <label>Seu WhatsApp <span>*</span></label>
-        <input type="text" id="nd-whats" placeholder="(11) 99999-9999">
+        <label>Seu nome <span>*</span></label>
+        <input type="text" id="nd-nome" placeholder="Como devemos te chamar">
       </div>
       <div class="modal-footer">
         <button class="btn-modal-cancel" onclick="closeModal('modal-new')">Cancelar</button>
         <button class="btn-modal-submit" onclick="submitDemand()">📋 Publicar demanda grátis</button>
       </div>
+      <p style="font-size:0.72rem;color:var(--muted);text-align:center;margin-top:14px;line-height:1.6">
+        Ao publicar, você concorda com nossa <a href="privacidade.html" style="color:var(--amber);text-decoration:none;font-weight:600">Política de Privacidade</a> e <a href="privacidade.html" style="color:var(--amber);text-decoration:none;font-weight:600">Termos de Uso</a>.
+      </p>
     </div>
     <div id="new-demand-success" class="demand-success" style="display:none">
       <div class="si">🎉</div>
@@ -406,7 +410,12 @@ nav {
       <div class="rm-demand-meta" id="rm-meta">—</div>
     </div>
     <div class="credits-notice">
-      💡 Responder demandas é <strong>gratuito</strong> no plano <a href="pagamento.html?plano=pro" style="color:inherit;font-weight:700;text-decoration:underline">Pro</a> e <a href="pagamento.html?plano=premium" style="color:inherit;font-weight:700;text-decoration:underline">Premium</a>. No plano gratuito, você pode responder 3 por mês. <a href="pagamento.html" style="color:inherit;text-decoration:underline;white-space:nowrap">Fazer upgrade →</a>
+      💡 Seu WhatsApp só será revelado ao cliente <strong>depois que ele aceitar sua proposta</strong>.
+    </div>
+    <div class="mfield">
+      <label>Seu WhatsApp (profissional) <span>*</span></label>
+      <input type="text" id="resp-whats" placeholder="(11) 99999-9999" maxlength="15" oninput="maskPhoneDemand(this)">
+      <div style="font-size:0.72rem;color:var(--muted);margin-top:4px">🔒 Só compartilhado com o cliente se ele aceitar sua proposta</div>
     </div>
     <div class="mfield">
       <label>Sua proposta / mensagem <span>*</span></label>
@@ -542,6 +551,13 @@ function sortBy(type, btn) {
 }
 function loadMore() { currentPage++; applyFilters(); }
 
+function maskPhoneDemand(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,11);
+  if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4})$/,'($1) $2-$3');
+  else v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/,'($1) $2-$3');
+  el.value = v;
+}
+
 // ── NEW DEMAND ──
 function openNewDemand() {
   document.getElementById('new-demand-form').style.display = 'block';
@@ -561,12 +577,17 @@ function submitDemand() {
   const estado = document.getElementById('nd-estado').value;
   const desc = document.getElementById('nd-desc').value.trim();
   const nome = document.getElementById('nd-nome').value.trim();
-  if (!titulo || !cat || !cidade || !estado || !desc || !nome) { showToast('⚠️ Preencha todos os campos obrigatórios', 'warn'); return; }
+  const whats = document.getElementById('nd-whats').value.trim();
+  if (!titulo || !cat || !cidade || !estado || !desc || !nome || !whats) {
+    showToast('⚠️ Preencha todos os campos obrigatórios', 'warn'); return;
+  }
   const nova = {
     id: demandas.length + 1, titulo, cat, cidade, estado,
     budget: document.getElementById('nd-budget').value || null,
-    urgencia: selectedUrg,
-    desc, cliente: nome.split(' ')[0] + ' ' + (nome.split(' ')[1]?.[0] || '') + '.',
+    urgencia: selectedUrg, desc,
+    cliente: nome.split(' ')[0] + ' ' + (nome.split(' ')[1]?.[0] || '') + '.',
+    clienteNome: nome,
+    clienteWhats: whats.replace(/\D/g,''),
     avatar: nome.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase(),
     tempo: 'agora mesmo', respostas: 0, aplicado: false,
   };
@@ -587,15 +608,67 @@ function openRespond(id) {
   document.getElementById('resp-msg').value = '';
   document.getElementById('resp-valor').value = '';
   document.getElementById('resp-prazo').value = '';
+  document.getElementById('resp-whats').value = '';
   document.getElementById('modal-respond').classList.add('open');
 }
+
 function submitResponse() {
   const msg = document.getElementById('resp-msg').value.trim();
+  const whatsProf = document.getElementById('resp-whats').value.trim().replace(/\D/g,'');
   if (!msg) { showToast('⚠️ Escreva sua proposta', 'warn'); return; }
+  if (!whatsProf || whatsProf.length < 10) { showToast('⚠️ Informe seu WhatsApp', 'warn'); return; }
+
   const d = demandas.find(x => x.id === respondingId);
+  if (!d) return;
+
+  const valor = document.getElementById('resp-valor').value.trim();
+  const prazo = document.getElementById('resp-prazo').value.trim();
+
+  // Número do profissional no formato internacional BR
+  const numProf = whatsProf.length === 11 ? `55${whatsProf}` : whatsProf;
+
+  // Link que o cliente clica para ACEITAR — abre WhatsApp DO PROFISSIONAL
+  const msgAceite = encodeURIComponent(
+    `Olá! Sou ${d.clienteNome || d.cliente} e *aceito sua proposta* para "${d.titulo}". Pode entrar em contato! 😊`
+  );
+  const linkAceite = `https://wa.me/${numProf}?text=${msgAceite}`;
+
+  // Número do cliente (de demandas criadas no site) ou número fictício para demandas de exemplo
+  const numCliente = d.clienteWhats
+    ? (d.clienteWhats.length === 11 ? `55${d.clienteWhats}` : d.clienteWhats)
+    : null;
+
+  // Mensagem enviada ao CLIENTE com a proposta + botão de aceite
+  const msgCliente = encodeURIComponent(
+`🔔 *Nova proposta recebida!*
+
+📋 *Serviço:* ${d.titulo}
+👷 *Profissional:* enviou uma proposta
+
+💬 *Mensagem:*
+${msg}
+${valor ? `\n💰 *Valor proposto:* ${valor}` : ''}${prazo ? `\n⏱️ *Prazo estimado:* ${prazo}` : ''}
+
+────────────────
+✅ *Para ACEITAR* e iniciar o serviço, clique no link abaixo:
+${linkAceite}
+
+❌ Para recusar, ignore esta mensagem.
+────────────────
+_Minha Mão de Obra — plataforma de serviços_`
+  );
+
+  if (numCliente) {
+    // Cliente criou a demanda no site — tem WhatsApp salvo
+    window.open(`https://wa.me/${numCliente}?text=${msgCliente}`, '_blank');
+    showToast('📲 Proposta enviada ao cliente via WhatsApp!', 'success');
+  } else {
+    // Demanda de exemplo (sem WhatsApp real) — mostra preview
+    showToast('✅ Proposta enviada! O cliente será notificado pelo WhatsApp.', 'success');
+  }
+
   if (d) { d.respostas++; d.aplicado = true; }
   closeModal('modal-respond');
-  showToast('✅ Proposta enviada! O cliente receberá pelo WhatsApp.', 'success');
   applyFilters();
 }
 
